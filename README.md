@@ -9,4 +9,4 @@ The three kinds of optimizations include:
 
 (2) Dataflow Optimization: deadcode elimination, liveness analysis, common subexpression elimination
 
-(3) Loop Optimization: loop invariant code motion\n
+(3) Loop Optimization: loop invariant code motion
