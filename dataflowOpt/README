@@ -1,0 +1,75 @@
+# Dataflow Analysis
+
+Group: Xian Zhang (xianz), Yuzhong Zhang (yuzhongz)
+
+## Notice
+For the output of the passes, in order to present our whole analysis process, we did not eliminate the output lines that did NOT appear in the assignment 2 guide pdf file, like the output lines accompanying $indvar = phi i32 [0, %bb.nph], [%indvar.next, %bb] in liveness analysis. Please ignore these lines.
+
+## Build Commands:
+	// make example testfiles' .ll (available and liveness)
+	make examplefile filename="$(FILENAME)"
+
+	// make testfiles 0-5
+	make testfile filename="$(FILENAME)"
+
+	make clean
+
+	// this will delete .ll files, which is not necessary most of the time
+	make cleanest
+	
+	// compile and link the source
+	make
+
+	// make and run the pass after the former compilations
+	// we perform analysis on .ll files
+	make RunPass pass="$(PASSNAME)" filename="$(FILENAME)"
+
+where $(FILENAME) is the pure filename without the extension, and $PASSNAME$ is either available for available analysis or liveness for liveness analysis.
+
+=====>
+====>
+===> Simplest build method here (for your convenience)
+==>
+=>
+
+### Simplest build method:
+PLEASE consider using this method to produce all the files that you need to run tests
+
+	// this cleans and reproduce everything before you run the pass
+	make prepare
+
+	make RunPass pass="$(PASSNAME)" filename="$(FILENAME)"
+
+	// just plugin passname (available / liveness) and filename (available-test-m2r / liveness-test-m2r / test0 / .. / test5)
+	
+
+## Examples:
+	make RunPass pass="liveness" filename="liveness-test-m2r"
+	make RunPass pass="available" filename="available-test-m2r"
+	make RunPass pass="liveness" filename="test4"
+	make RunPass pass="available" filename="test0"
+
+	make examplefile filename="liveness-test-m2r"
+
+	make testfile filename="test0"
+	make RunPass pass="available" filename="test0"
+
+	make testfile filename="test1"
+	make RunPass pass="available" filename="test1"
+
+    // an example run
+    make prepare
+
+    make RunPass pass="available" filename="available-test-m2r"
+
+To make things even easier, you can do stuff like:
+	make prepare
+	make clean; make; make RunPass pass="available" filename="available-test-m2r" &> test.txt; vim test.txt
+
+	make clean; make; make RunPass pass="liveness" filename="liveness-test-m2r" &> test.txt; vim test.txt
+	make clean; make; make RunPass pass="liveness" filename="test0" &> test.txt; vim test.txt
+	make clean; make; make RunPass pass="available" filename="test1" &> test.txt; vim test.txt
+	make clean; make; make RunPass pass="available" filename="test5" &> test.txt; vim test.txt
+	make clean; make; make RunPass pass="liveness" filename="test5" &> test.txt; vim test.txt
+
+

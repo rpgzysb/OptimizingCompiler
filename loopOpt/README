@@ -1,0 +1,40 @@
+# Dataflow Analysis
+
+Group: Xian Zhang (xianz), Yuzhong Zhang (yuzhongz)
+
+There is a part in the LICM/Makefile, called:
+`### Files Registration`
+inside which you can simply comment/uncomment the `PASSFILE` and `PASSNAME` to choose the pass you want to run, and change the `FILENAME` to choose test files you wish to use.
+
+(For `FILENAME`, please omit `.c`)
+
+## Testfiles:
+
+Dominator: 
+----dom-test0.c
+
+DCE:
+----dce_test0.c
+----dce_test1.c
+----dce_test2.c
+
+LICM:
+----loop-invariant.c
+----nestedloops_test0.c
+----nestedloops_test1.c
+
+## Build Commands:
+
+Before you run, please make sure the `PASSFILE`, `PASSNAME`, `FILENAME` in the Makefile are those you want.
+
+To build and run, just do `make prepare` to make ready the files (EVERY TIME you run a pass), and then run `make RunPass` to run the pass you like.
+
+After every run, you will find the outcome in `LICM/out.ll`, and the original `.ll` file under `tests/`. (Except for dominator pass, whose output is in the standard output)
+	
+### To clean up	
+	
+	make clean
+
+	// this will delete .ll files as well
+	make cleanest
+

@@ -1,0 +1,58 @@
+# Function Information
+
+note: do `make cleanest` to clean up everything when files are too many
+
+## Example Test
+clang -O -emit-llvm -c loop.c
+make
+opt -load ./FunctionInfo.so -function-info loop.bc -o out
+
+## Custom test: new_test.c
+clang -O -emit-llvm -c ../tests/new_test.c
+
+or close optimization, which provides more interesting results:
+
+clang -O0 -emit-llvm -c ../tests/new_test.c
+
+make
+opt -load ./FunctionInfo.so -function-info new_test.bc -o out_new
+
+------
+
+# Local Optimization
+
+note: do `make cleanest` to clean up everything when files are too many
+
+In the top of LocalOpts.cpp, there are 4 switches:
+
+#define DEBUG 0
+#define AL 1
+#define CF 1
+#define ST 1
+
+DEBUG: set 1 to print out the optimized instructions
+AL: set 1 to open algebraic identities
+CF: set 1 to open constant folding
+ST: set 1 to open strength reductions 
+
+## Three Example Tests
+clang -O0 -emit-llvm -c ../tests/constfold.c; opt -mem2reg constfold.bc -o constfold-m2r.bc
+
+make clean; make; opt -load ./LocalOpts.so -local-opts constfold-m2r.bc -o out_constfold
+
+
+clang -O0 -emit-llvm -c ../tests/algebraic.c; opt -mem2reg algebraic.bc -o algebraic-m2r.bc
+
+make clean; make; opt -load ./LocalOpts.so -local-opts algebraic-m2r.bc -o out_algebraic
+
+
+clang -O0 -emit-llvm -c ../tests/strength.c; opt -mem2reg strength.bc -o strength-m2r.bc
+
+make clean; make; opt -load ./LocalOpts.so -local-opts strength-m2r.bc -o out_strength
+
+## Custom test: local_test.c
+
+clang -O0 -emit-llvm -c ../tests/local_test.c; opt -mem2reg local_test.bc -o local_test-m2r.bc; llvm-dis local_test-m2r.bc
+
+make clean; make; opt -load ./LocalOpts.so -local-opts local_test-m2r.bc -o out_local_test
+
